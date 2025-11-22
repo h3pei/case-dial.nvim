@@ -1,0 +1,10 @@
+{
+  "diagnostics": {
+    "globals": [
+      "assert",
+      "before_each",
+      "describe",
+      "it"
+    ]
+  }
+}
