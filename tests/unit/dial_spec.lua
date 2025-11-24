@@ -64,7 +64,7 @@ describe("dial", function()
     it("should convert word under cursor from snake to pascal case", function()
       -- Mock selector to return a snake_case word
       selector.get_word_under_cursor = function()
-        return "hello_world", 0, 11
+        return "hello_world", 0, 0, 11
       end
 
       -- Track what was set
@@ -99,7 +99,7 @@ describe("dial", function()
     it("should warn when case cannot be detected", function()
       -- Single word without case indicators
       selector.get_word_under_cursor = function()
-        return "hello", 0, 5
+        return "hello", 0, 0, 5
       end
 
       local warned = false
@@ -125,7 +125,7 @@ describe("dial", function()
 
       for _, tc in ipairs(test_cases) do
         selector.get_word_under_cursor = function()
-          return tc.input, 0, #tc.input
+          return tc.input, 0, 0, #tc.input
         end
 
         local result = nil
@@ -144,7 +144,7 @@ describe("dial", function()
     it("should convert visual selection from snake to pascal case", function()
       -- Mock selector to return a visual selection
       selector.get_visual_selection = function()
-        return "hello_world", 0, 0, 0, 11
+        return "hello_world", 0, 0, 11
       end
 
       local set_text_args = nil
@@ -184,7 +184,7 @@ describe("dial", function()
 
     it("should reselect with correct positions after conversion", function()
       selector.get_visual_selection = function()
-        return "hello_world", 0, 5, 0, 16
+        return "hello_world", 0, 5, 16
       end
 
       local cursor_positions = {}
@@ -212,7 +212,7 @@ describe("dial", function()
 
       for _, tc in ipairs(test_cases) do
         selector.get_visual_selection = function()
-          return tc.input, 0, 0, 0, #tc.input
+          return tc.input, 0, 0, #tc.input
         end
 
         local result = nil
@@ -239,7 +239,7 @@ describe("dial", function()
 
     it("should follow custom case order in dial_normal", function()
       selector.get_word_under_cursor = function()
-        return "helloWorld", 0, 10
+        return "helloWorld", 0, 0, 10
       end
 
       local result = nil
@@ -255,7 +255,7 @@ describe("dial", function()
 
     it("should wrap around in custom case order", function()
       selector.get_word_under_cursor = function()
-        return "hello_world", 0, 11
+        return "hello_world", 0, 0, 11
       end
 
       local result = nil

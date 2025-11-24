@@ -1,61 +1,54 @@
 ---@class CaseDialSelector
 local M = {}
 
+local IDENTIFIER_PATTERN = "[a-zA-Z0-9_-]"
+
+---Get a single character at the specified position (1-indexed)
+---@param str string The string to get the character from
+---@param pos number The position (1-indexed)
+---@return string char The character at the position
+local function char_at(str, pos)
+  return str:sub(pos, pos)
+end
+
 ---Get the word under cursor in normal mode
 ---@return string|nil word The word under cursor
+---@return number|nil row Row (0-indexed)
 ---@return number|nil start_col Start column (0-indexed)
 ---@return number|nil end_col End column (0-indexed, exclusive)
 function M.get_word_under_cursor()
   local word = vim.fn.expand("<cword>")
   if not word or word == "" then
-    return nil, nil, nil
+    return nil, nil, nil, nil
   end
 
-  local line = vim.api.nvim_get_current_line()
-  local col = vim.fn.col(".") - 1 -- 0-indexed
+  local current_line = vim.api.nvim_get_current_line()
+  local current_col = vim.fn.col(".") -- 1-indexed
+  local row = vim.fn.line(".") - 1 -- 0-indexed
 
   -- Find the word boundaries
-  local start_col = col
-  local end_col = col
+  local start_col = current_col
+  local end_col = current_col
 
   -- Move start_col to the beginning of the word
-  while start_col > 0 do
-    local char = line:sub(start_col, start_col)
-    if not char:match("[a-zA-Z0-9_-]") then
-      break
-    end
+  while start_col > 1 and char_at(current_line, start_col - 1):match(IDENTIFIER_PATTERN) do
     start_col = start_col - 1
-  end
-  -- Adjust if we stopped on a non-identifier character or went past the start
-  if start_col == 0 then
-    -- We reached the beginning; check if first char is identifier
-    if line:sub(1, 1):match("[a-zA-Z0-9_-]") then
-      start_col = 1
-    else
-      start_col = 2
-    end
-  else
-    start_col = start_col + 1
   end
 
   -- Move end_col to the end of the word
-  while end_col < #line do
-    local char = line:sub(end_col + 1, end_col + 1)
-    if not char:match("[a-zA-Z0-9_-]") then
-      break
-    end
+  while end_col < #current_line and char_at(current_line, end_col + 1):match(IDENTIFIER_PATTERN) do
     end_col = end_col + 1
   end
 
-  local extracted_word = line:sub(start_col, end_col)
-  return extracted_word, start_col - 1, end_col
+  local extracted_word = current_line:sub(start_col, end_col)
+
+  return extracted_word, row, start_col - 1, end_col
 end
 
 ---Get the selected text in visual mode
 ---@return string|nil text The selected text
----@return number|nil start_row Start row (0-indexed)
+---@return number|nil row Row (0-indexed)
 ---@return number|nil start_col Start column (0-indexed)
----@return number|nil end_row End row (0-indexed)
 ---@return number|nil end_col End column (0-indexed, exclusive)
 function M.get_visual_selection()
   local start_pos = vim.fn.getpos("'<")
@@ -74,16 +67,17 @@ function M.get_visual_selection()
 
   -- Only support single-line selection
   if start_row ~= end_row then
-    return nil, nil, nil, nil, nil
+    return nil, nil, nil, nil
   end
 
   local lines = vim.api.nvim_buf_get_lines(0, start_row, start_row + 1, false)
   if #lines == 0 then
-    return nil, nil, nil, nil, nil
+    return nil, nil, nil, nil
   end
 
-  local text = lines[1]:sub(start_col + 1, end_col)
-  return text, start_row, start_col, end_row, end_col
+  local extracted_word = lines[1]:sub(start_col + 1, end_col)
+
+  return extracted_word, start_row, start_col, end_col
 end
 
 return M

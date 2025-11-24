@@ -23,12 +23,11 @@ end
 
 ---Internal function to detect, convert, and replace text
 ---@param text string The text to convert
----@param start_row number Start row (0-indexed)
+---@param row number Row (0-indexed)
 ---@param start_col number Start column
----@param end_row number End row (0-indexed)
 ---@param end_col number End column
 ---@return string|nil converted The converted text, or nil if failed
-local function dial(text, start_row, start_col, end_row, end_col)
+local function dial(text, row, start_col, end_col)
   -- Detect current case
   local current_case = detector.detect(text)
   if current_case == "unknown" then
@@ -51,43 +50,40 @@ local function dial(text, start_row, start_col, end_row, end_col)
   end
 
   -- Replace text in buffer
-  vim.api.nvim_buf_set_text(0, start_row, start_col, end_row, end_col, { converted })
+  vim.api.nvim_buf_set_text(0, row, start_col, row, end_col, { converted })
 
   return converted
 end
 
 ---Dial the case of the word under cursor (Normal mode)
 function M.dial_normal()
-  local text, start_col, end_col = selector.get_word_under_cursor()
+  local text, row, start_col, end_col = selector.get_word_under_cursor()
   if not text then
     utils.notify_warn("No word under cursor")
     return
   end
 
-  local start_row = vim.fn.line(".") - 1
-  local end_row = start_row
-
-  dial(text, start_row, start_col, end_row, end_col)
+  dial(text, row, start_col, end_col)
 end
 
 ---Dial the case of the visual selection (Visual mode)
 function M.dial_visual()
-  local text, start_row, start_col, end_row, end_col = selector.get_visual_selection()
+  local text, row, start_col, end_col = selector.get_visual_selection()
   if not text then
     utils.notify_warn("No valid selection")
     return
   end
 
-  local converted = dial(text, start_row, start_col, end_row, end_col)
+  local converted = dial(text, row, start_col, end_col)
   if not converted then
     return
   end
 
   -- Reselect to allow continuous dialing
   local new_end_col = start_col + #converted
-  vim.api.nvim_win_set_cursor(0, { start_row + 1, start_col })
+  vim.api.nvim_win_set_cursor(0, { row + 1, start_col })
   vim.cmd("normal! v")
-  vim.api.nvim_win_set_cursor(0, { end_row + 1, new_end_col - 1 })
+  vim.api.nvim_win_set_cursor(0, { row + 1, new_end_col - 1 })
 end
 
 return M
