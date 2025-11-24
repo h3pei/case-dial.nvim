@@ -8,6 +8,8 @@ describe("dial", function()
   -- Store original vim functions
   local original_nvim_buf_set_text
   local original_nvim_win_set_cursor
+  local original_nvim_replace_termcodes
+  local original_nvim_feedkeys
   local original_fn_line
   local original_cmd
 
@@ -26,6 +28,8 @@ describe("dial", function()
     -- Store original vim functions
     original_nvim_buf_set_text = vim.api.nvim_buf_set_text
     original_nvim_win_set_cursor = vim.api.nvim_win_set_cursor
+    original_nvim_replace_termcodes = vim.api.nvim_replace_termcodes
+    original_nvim_feedkeys = vim.api.nvim_feedkeys
     original_fn_line = vim.fn.line
     original_cmd = vim.cmd
 
@@ -37,6 +41,10 @@ describe("dial", function()
     -- Setup vim mocks
     vim.api.nvim_buf_set_text = function() end
     vim.api.nvim_win_set_cursor = function() end
+    vim.api.nvim_replace_termcodes = function(str)
+      return str
+    end
+    vim.api.nvim_feedkeys = function() end
     vim.fn.line = function()
       return 1
     end
@@ -56,6 +64,8 @@ describe("dial", function()
     -- Restore vim functions
     vim.api.nvim_buf_set_text = original_nvim_buf_set_text
     vim.api.nvim_win_set_cursor = original_nvim_win_set_cursor
+    vim.api.nvim_replace_termcodes = original_nvim_replace_termcodes
+    vim.api.nvim_feedkeys = original_nvim_feedkeys
     vim.fn.line = original_fn_line
     vim.cmd = original_cmd
   end)

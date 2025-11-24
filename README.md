@@ -83,12 +83,11 @@ require("case-dial").setup({
 })
 
 vim.keymap.set("n", "<leader>cc", function()
-  require("case-dial").dial("n")
+  require("case-dial").dial_normal()
 end, { desc = "Dial case" })
 
 vim.keymap.set("v", "<leader>cc", function()
-  vim.cmd("normal! ")
-  require("case-dial").dial("v")
+  require("case-dial").dial_visual()
 end, { desc = "Dial case" })
 ```
 

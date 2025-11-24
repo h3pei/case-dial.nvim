@@ -68,6 +68,10 @@ end
 
 ---Dial the case of the visual selection (Visual mode)
 function M.dial_visual()
+  -- Exit visual mode first to update '< and '> marks
+  local esc = vim.api.nvim_replace_termcodes("<Esc>", true, false, true)
+  vim.api.nvim_feedkeys(esc, "nx", false)
+
   local text, row, start_col, end_col = selector.get_visual_selection()
   if not text then
     utils.notify_warn("No valid selection")

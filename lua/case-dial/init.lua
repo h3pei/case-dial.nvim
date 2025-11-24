@@ -21,9 +21,6 @@ function M.setup(opts)
     end, { desc = "Dial case (normal mode)" })
 
     vim.keymap.set("v", config.keymap, function()
-      -- Exit visual mode first to update '< and '> marks
-      local esc = vim.api.nvim_replace_termcodes("<Esc>", true, false, true)
-      vim.api.nvim_feedkeys(esc, "nx", false)
       M.dial_visual()
     end, { desc = "Dial case (visual mode)" })
   end
