@@ -6,7 +6,7 @@ A Neovim plugin that dials through different case styles for identifiers.
 
 ## Features
 
-- Dial through case styles with a single keybinding
+- Dial through case styles with a single keybinding (default: `C-\`)
 - Supports 5 case styles:
   - `snake_case`
   - `PascalCase`
@@ -18,15 +18,10 @@ A Neovim plugin that dials through different case styles for identifiers.
 
 ## Installation
 
-### [lazy.nvim](https://github.com/folke/lazy.nvim)
+### lazy.nvim
 
 ```lua
-{
-  "h3pei/case-dial.nvim",
-  config = function()
-    require("case-dial").setup()
-  end,
-}
+{ "h3pei/case-dial.nvim", opts = {} }
 ```
 
 ## Usage
@@ -82,18 +77,16 @@ require("case-dial").setup({
   keymap = false,
 })
 
-vim.keymap.set("n", "<leader>cc", function()
+vim.keymap.set("n", "<leader>cd", function()
   require("case-dial").dial_normal()
 end, { desc = "Dial case" })
 
-vim.keymap.set("v", "<leader>cc", function()
+vim.keymap.set("v", "<leader>cd", function()
   require("case-dial").dial_visual()
 end, { desc = "Dial case" })
 ```
 
-### Subset of Cases
-
-Use only specific case types:
+### Use only specific case types
 
 ```lua
 require("case-dial").setup({
