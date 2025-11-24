@@ -1,76 +1,52 @@
 # case-dial.nvim
 
-A Neovim plugin that dials through different case styles for identifiers.
+A simple Neovim plugin that cycles through case styles with one keypress.
+
+**One feature. One keymap. Zero config required.**
 
 ![case-dial-nvim-demo](https://github.com/user-attachments/assets/6de2e352-a333-4097-976b-831cb173d3f8)
 
-## Features
-
-- Dial through case styles with a single keybinding (default: `C-\`)
-- Supports 5 case styles:
-  - `snake_case`
-  - `PascalCase`
-  - `camelCase`
-  - `CONSTANT_CASE`
-  - `kebab-case`
-- Works in both Normal and Visual mode
-- Customizable case order and keybinding
-
 ## Installation
-
-### lazy.nvim
 
 ```lua
 { "h3pei/case-dial.nvim", opts = {} }
 ```
 
+That's it. Press `<C-\>` on any word and it just works.
+
 ## Usage
-
-Press `<C-\>` (Ctrl + \) on a word to dial through case styles.
-
-### Normal Mode
-
-Place your cursor on an identifier and press `<C-\>`:
 
 ```
 my_variable → MyVariable → myVariable → MY_VARIABLE → my-variable → my_variable
 ```
 
-### Visual Mode
+- **Normal mode**: Place cursor on a word and press `<C-\>`
+- **Visual mode**: Select text and press `<C-\>`
 
-Select text and press `<C-\>` to convert the selection.
+## Features
 
-## Configuration
+- Single keymap to cycle through case styles
+- Supports 5 case styles: `snake_case`, `PascalCase`, `camelCase`, `CONSTANT_CASE`, `kebab-case`
+- Works in Normal and Visual mode
+- No configuration needed (but customizable if you want)
 
-```lua
-require("case-dial").setup({
-  -- Case types to dial through (in order)
-  -- Available cases: "snake", "pascal", "camel", "constant", "kebab"
-  cases = {
-    "snake",
-    "pascal",
-    "camel",
-    "constant",
-    "kebab"
-  },
+## Configuration (Optional)
 
-  -- Keymap to trigger case cycling
-  -- Set to false to disable default keymap
-  keymap = "<C-\\>",
-})
-```
-
-### Custom Keymap
-
-Override with your preferred keymap:
+Default settings work for most users. Customize only if needed:
 
 ```lua
 require("case-dial").setup({
+  -- Change case order
+  cases = { "snake", "camel" },  -- Only these two
+
+  -- Change keymap
   keymap = "<leader>cc",
 })
 ```
 
-Or disable default keymap and set your own:
+### Manual Keymap Setup
+
+Disable default keymap and define your own:
 
 ```lua
 require("case-dial").setup({
@@ -84,12 +60,4 @@ end, { desc = "Dial case" })
 vim.keymap.set("v", "<leader>cd", function()
   require("case-dial").dial_visual()
 end, { desc = "Dial case" })
-```
-
-### Use only specific case types
-
-```lua
-require("case-dial").setup({
-  cases = { "snake", "camel" },  -- Only dial between snake_case and camelCase
-})
 ```
