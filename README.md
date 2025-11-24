@@ -2,6 +2,8 @@
 
 A Neovim plugin that dials through different case styles for identifiers.
 
+![case-dial-nvim-demo](https://github.com/user-attachments/assets/6de2e352-a333-4097-976b-831cb173d3f8)
+
 ## Features
 
 - Dial through case styles with a single keybinding
