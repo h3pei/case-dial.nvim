@@ -11,7 +11,7 @@ M.case_index = {}
 local utils = require("case-dial.utils")
 
 ---@type string[]
-local available_cases = { "snake", "pascal", "camel", "constant", "kebab" }
+local available_cases = require("case-dial.converter").AVAILABLE_CASES
 
 ---@class CaseDialConfig
 ---@field cases string[] Array of case types in order

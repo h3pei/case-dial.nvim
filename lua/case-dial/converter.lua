@@ -121,6 +121,10 @@ local converters = {
   kebab = to_kebab,
 }
 
+---Available case types
+---@type string[]
+M.AVAILABLE_CASES = { "snake", "pascal", "camel", "constant", "kebab" }
+
 ---Convert a string to the specified case type
 ---@param str string The string to convert
 ---@param target_case string The target case type ("snake", "pascal", "camel", "constant", "kebab")
@@ -130,8 +134,8 @@ function M.convert(str, target_case)
     return nil
   end
 
-  local converter = converters[target_case]
-  if not converter then
+  local convertFunc = converters[target_case]
+  if not convertFunc then
     return nil
   end
 
@@ -140,13 +144,7 @@ function M.convert(str, target_case)
     return nil
   end
 
-  return converter(words)
-end
-
----Get all available case types
----@return string[] case_types Array of case type names
-function M.get_case_types()
-  return { "snake", "pascal", "camel", "constant", "kebab" }
+  return convertFunc(words)
 end
 
 return M

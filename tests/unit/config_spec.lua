@@ -17,15 +17,6 @@ describe("config", function()
     }
   end)
 
-  -- Helper to set cases and case_index together
-  local function set_cases(cases)
-    config.cases = cases
-    config.case_index = {}
-    for i, case in ipairs(cases) do
-      config.case_index[case] = i
-    end
-  end
-
   describe("validate", function()
     it("should accept all valid case types", function()
       local is_valid = config.validate({
