@@ -110,41 +110,4 @@ describe("config", function()
       assert.is_false(config.keymap)
     end)
   end)
-
-  describe("get_next_case", function()
-    it("should return next case in dial", function()
-      set_cases({ "snake", "pascal", "camel" })
-
-      assert.are.equal("pascal", config.get_next_case("snake"))
-      assert.are.equal("camel", config.get_next_case("pascal"))
-      assert.are.equal("snake", config.get_next_case("camel"))
-    end)
-
-    it("should wrap around at the end", function()
-      set_cases({ "snake", "pascal" })
-
-      assert.are.equal("snake", config.get_next_case("pascal"))
-    end)
-
-    it("should return first case for unknown config case", function()
-      set_cases({ "snake", "pascal", "camel" })
-
-      assert.are.equal("snake", config.get_next_case("unknown"))
-    end)
-
-    it("should work with custom case order", function()
-      set_cases({ "camel", "snake", "constant" })
-
-      assert.are.equal("snake", config.get_next_case("camel"))
-      assert.are.equal("constant", config.get_next_case("snake"))
-      assert.are.equal("camel", config.get_next_case("constant"))
-    end)
-
-    it("should work with two cases", function()
-      set_cases({ "snake", "camel" })
-
-      assert.are.equal("camel", config.get_next_case("snake"))
-      assert.are.equal("snake", config.get_next_case("camel"))
-    end)
-  end)
 end)

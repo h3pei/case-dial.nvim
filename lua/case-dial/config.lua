@@ -62,21 +62,6 @@ function M.setup(opts)
   return true
 end
 
----Get the next case type in the dial
----@param current_case string The current case type
----@return string|nil next_case The next case type, or nil if not found
-function M.get_next_case(current_case)
-  local cases = M.cases
-
-  local idx = M.case_index[current_case]
-  if not idx then
-    return cases[1]
-  end
-
-  local next_index = (idx % #cases) + 1
-  return cases[next_index]
-end
-
 -- Allow direct access to config values via metatable
 setmetatable(M, {
   __index = function(_, key)

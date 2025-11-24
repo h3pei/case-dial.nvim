@@ -1,10 +1,12 @@
 {
   "diagnostics": {
     "globals": [
+      "after_each",
       "assert",
       "before_each",
       "describe",
-      "it"
+      "it",
+      "vim"
     ]
   }
 }
