@@ -8,6 +8,8 @@ A simple Neovim plugin that cycles through case styles with one keypress.
 
 ## Installation
 
+### lazy.nvim
+
 ```lua
 { "h3pei/case-dial.nvim", opts = {} }
 ```
